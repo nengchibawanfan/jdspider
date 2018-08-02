@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数据展示</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<style>
+        .container {
+            margin-bottom: 50px;
+        }
+		.cate_list li {
+			margin-top: 5px;
+		}
+		.select, .image {
+			border: 2px solid #67c6c2;
+			padding: 10px;
+		}
+		.image {
+			margin-top: 10px;
+		}
+		.image div:first-child {
+			border-right: 2px solid #67c6c2;
+		}
+		.image h3 {
+			border-bottom: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1 class="text-center">数据展示</h1>
+		<ul class="list-unstyled cate_list col-md-2">
+		  <li><button type="button" class="btn btn-default" id="0">手机</button></li>
+		  <li><button type="button" class="btn btn-default" id="1">耳机</button></li>
+		  <li><button type="button" class="btn btn-default" id="2">音箱</button></li>
+		  <li><button type="button" class="btn btn-default" id="3">手环</button></li>
+		  <li><button type="button" class="btn btn-default" id="4">笔记本</button></li>
+		</ul>
+
+		<div class="main col-md-10">
+			<div class="select">
+				<div class="row" style="margin-top: 10px">
+					<div class="col-md-2">价格范围</div>
+					<input type="text" class=" col-md-1" placeholder="" value="0" name="start_price" id="start_price">
+					<div class="col-md-1 text-center"> - </div>
+					<input type="text" class=" col-md-2" placeholder="" value="0" name="end_price" id="end_price">
+					<button type="button" class="btn btn-primary col-md-offset-4" id="renew">确定</button>
+				</div>
+				<div class="row" style="margin-top: 10px">
+					<div class="col-md-2">销量范围</div>
+					<input type="text" class=" col-md-1" placeholder="" value="0" name="start_sale" id="start_sale">
+					<div class="col-md-1 text-center"> - </div>
+					<input type="text" class=" col-md-2" placeholder="" value="0" name="end_sale" id="end_sale">
+				</div>
+			</div>
+
+			<div class="row image">
+				<div class="col-md-6">
+					<h3>词云</h3>
+					<img src="{{ word }}" class="img-responsive center-block">
+				</div>
+
+				<div class="col-md-6">
+					<h3>散点图</h3>
+					<img src="{{ scatter }}" class="img-responsive center-block">
+				</div>
+			</div>
+
+			<div class="row image">
+				<h3>扇形图</h3>
+				<div class="col-md-6">
+					<img src="{{ price }}" class="img-responsive center-block">
+					<p class="text-center">价格区间扇形图</p>
+				</div>
+
+				<div class="col-md-6">
+					<img src="{{ sale }}" class="img-responsive center-block">
+					<p class="text-center">销量区间扇形图</p>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+
+
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+        {% if cate %}
+            $("#{{ cate }}").removeClass('btn-default');
+            $("#{{ cate }}").addClass('btn-danger');
+            var cate = "{{ cate }}";
+            $("#start_price").val("{{ start_price }}")
+			$("#end_price").val("{{ end_price }}")
+			$("#start_sale").val("{{ start_sale }}")
+			$("#end_sale").val("{{ end_sale }}")
+        {% else %}
+            $cate = '0';
+        {% endif %}
+        $("li>button").click(function (e){
+            $("li>button").removeClass('btn-danger');
+            $("li>button").addClass('btn-default');
+            $(e.target).removeClass('btn-default');
+            $(e.target).addClass('btn-danger');
+            $cate = e.target.id;
+        });
+
+        $("#renew").click(function () {
+            location.href = '/show?' + "cate=" + $cate + "&start_price=" + $("#start_price").val() + "&end_price=" + $("#end_price").val() + "&start_sale=" + $("#start_sale").val() + "&end_sale=" + $("#end_sale").val();
+        })
+    </script>
+</body>
+</html>
